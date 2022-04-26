@@ -2,11 +2,15 @@
 /**
 * BookMedik
 * @author evilnapsis
+* @url http://evilnapsis.com/about/
 **/
+
 session_start();
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
+
+$mail = new PHPMailer(true);
 
 require_once __DIR__ . '/../../../vendor/phpmailer/phpmailer/src/Exception.php';
 require_once __DIR__ . '/../../../vendor/phpmailer/phpmailer/src/PHPMailer.php';
@@ -15,8 +19,6 @@ include "../../autoload.php";
 include '../model/ReservationData.php'; 
 include '../model/PacientData.php';
 
-// passing true in constructor enables exceptions in PHPMailer
-$mail = new PHPMailer(true);
 
 if(count($_POST)>0){
 	$user = ReservationData::getById($_POST["id"]);
@@ -38,32 +40,31 @@ if(count($_POST)>0){
 
 	if ($_POST["status_id"] == 4) {
 		try {
+            // Server settings
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587;
+        
+            $mail->Username = 'support@wolvisor.com'; // YOUR gmail email
+            //$mail->Password = 'zhikcngxixagwwri'; // YOUR gmail password
+            $mail->Password = 'lmceoebvcleisjdx'; // YOUR gmail password
+        
+            // Sender and recipient settings
+            $mail->setFrom('support@wolvisor.com', 'Aprofam');
+            $mail->addAddress('mrcou.994@gmail.com', '');
             
-             // Server settings
-             $mail->isSMTP();
-             $mail->Host = 'smtp.gmail.com';
-             $mail->SMTPAuth = true;
-             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-             $mail->Port = 587;
-         
-             $mail->Username = 'support@wolvisor.com'; // YOUR gmail email
-             //$mail->Password = 'zhikcngxixagwwri'; // YOUR gmail password
-             $mail->Password = 'lmceoebvcleisjdx'; // YOUR gmail password
-         
-             // Sender and recipient settings
-             $mail->setFrom('support@wolvisor.com', 'Aprofam');ñ
-             $mail->addAddress('mrcou.994@gmail.com', '');
-             
-             // Setting the email content
-             $mail->IsHTML(true);
-             $mail->Subject = "Nueva Cita";
-             $mail->Body = 'Esto es una prueba desde gestion de citas';
-         
-             if($mail->send()){
-                 echo "email enviado";
-             }else{
-                 echo "no se envio";
-             }
+            // Setting the email content
+            $mail->IsHTML(true);
+            $mail->Subject = "Nueva Cita";
+            $mail->Body = 'Hola '. $_SESSION['username'].' '.$_SESSION['lastname'] . ', <br> Tu cita para el día '. $datet[0]. ' en el horario de ' .$datet[1]. ' se agendo de forma exitosa. <br><br> Saludos,';
+        
+            if($mail->send()){
+                echo "email enviado";
+            }else{
+                echo "no se envio";
+            }
             
         } catch (Exception $e) {
             echo "Error in sending email. Mailer Error: {$mail->ErrorInfo}";
