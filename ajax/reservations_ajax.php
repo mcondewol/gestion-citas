@@ -32,7 +32,7 @@ if(array_key_exists("opcion", $_POST)){
             $stmt = $dbhost->prepare($query);
             if($stmt->execute()){
                 while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                    $acciones = "<a href='index.php?view=reservationhistory&id=".$row['id']."' title='Historial' class='btn btn-success btn-xs'><i class='fa fa-history'></i></a>
+                    $acciones = "<a href='index.php?view=reservationhistory&id=".$row['id']."' title='Ver' class='btn btn-success btn-xs'><i class='glyphicon glyphicon-list-alt'></i></a>
                                 <a href='index.php?view=editreservation&id=".$row['id']."' title='Editar' class='btn btn-warning btn-xs'><i class='fa fa-pencil'></i></a>
                                 <a href='index.php?view=delreservation&id=".$row['id']."' class='btn btn-danger btn-xs' rel='tooltip' title='Eliminar' class='btn-simple btn btn-danger btn-xs'><i class='fa fa-remove'></i></a>";
                     

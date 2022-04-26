@@ -29,7 +29,7 @@ foreach($events as $event){
 <div class="col-md-12">
 <div class="card">
   <div class="card-header" data-background-color="blue">
-      <h4 class="title">Calendario de Citasss</h4>
+      <h4 class="title">Calendario de Citas</h4>
   </div>
   <div class="card-content table-responsive">
 <div id="calendar"></div>

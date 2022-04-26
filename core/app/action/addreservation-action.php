@@ -23,7 +23,7 @@ $r->sick = $_POST["sick"];
 $r->symtoms = $_POST["symtoms"];
 $r->medicaments = $_POST["medicaments"];
 
-
+echo json_encode($r);
 $r->add();
 
 Core::alert("Agregado exitosamente!");

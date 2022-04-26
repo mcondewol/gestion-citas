@@ -17,7 +17,7 @@ include '../model/PacientData.php';
 
 // passing true in constructor enables exceptions in PHPMailer
 $mail = new PHPMailer(true);
-
+$mail->CharSet = 'UTF-8';
 if(count($_POST)>0){
 	$user = ReservationData::getById($_POST["id"]);
 	$user->title = $_POST["title"];
@@ -33,31 +33,35 @@ if(count($_POST)>0){
 	$user->sick = $_POST["sick"];
 	$user->symtoms = $_POST["symtoms"];
 	$user->medicaments = $_POST["medicaments"];
+    $userEmail = $_POST["email"];
 
 	$user->update();
+    $mail->isSMTP();
+    $mail->Host = 'smtp.gmail.com';
+    $mail->SMTPAuth = true;
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port = 587;
+
+    $mail->Username = 'support@wolvisor.com'; // YOUR gmail email
+    //$mail->Password = 'zhikcngxixagwwri'; // YOUR gmail password
+    $mail->Password = 'lmceoebvcleisjdx'; // YOUR gmail password
+
+    // Sender and recipient settings
+    $mail->setFrom('support@wolvisor.com', 'Aprofam');
+    $mail->addAddress($userEmail, '');
+    
+    // Setting the email content
+    $mail->IsHTML(true);
 
 	if ($_POST["status_id"] == 4) {
 		try {
             
              // Server settings
-             $mail->isSMTP();
-             $mail->Host = 'smtp.gmail.com';
-             $mail->SMTPAuth = true;
-             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-             $mail->Port = 587;
-         
-             $mail->Username = 'support@wolvisor.com'; // YOUR gmail email
-             //$mail->Password = 'zhikcngxixagwwri'; // YOUR gmail password
-             $mail->Password = 'lmceoebvcleisjdx'; // YOUR gmail password
-         
-             // Sender and recipient settings
-             $mail->setFrom('support@wolvisor.com', 'Aprofam');ñ
-             $mail->addAddress('mrcou.994@gmail.com', '');
-             
-             // Setting the email content
-             $mail->IsHTML(true);
-             $mail->Subject = "Nueva Cita";
-             $mail->Body = 'Esto es una prueba desde gestion de citas';
+            
+             $subject = "Actualización de cita";
+             $subject = utf8_decode($subject);
+             $mail->Subject = $subject;
+             $mail->Body = 'Su cita ha sido cancelada';
          
              if($mail->send()){
                  echo "email enviado";
@@ -68,7 +72,26 @@ if(count($_POST)>0){
         } catch (Exception $e) {
             echo "Error in sending email. Mailer Error: {$mail->ErrorInfo}";
         }
-	}
+	}else if($_POST["status_id"] == 1){
+        try {
+            
+            // Server settings
+           
+            $subject = "Actualización de cita";
+            $subject = utf8_decode($subject);
+            $mail->Subject = $subject;
+            $mail->Body = 'Su cita ha sido actualizada';
+        
+            if($mail->send()){
+                echo "email enviado";
+            }else{
+                echo "no se envio";
+            }
+           
+       } catch (Exception $e) {
+           echo "Error in sending email. Mailer Error: {$mail->ErrorInfo}";
+       }
+    }
 
 	
 Core::alert("Actualizado exitosamente!");

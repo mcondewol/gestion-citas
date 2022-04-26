@@ -10,6 +10,9 @@ $payments = PaymentData::getAll();
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css">
 <link href="assets/css/material-dashboard.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css" rel="stylesheet" />
+
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -27,7 +30,7 @@ $payments = PaymentData::getAll();
                     <div class="form-group">
                         <label for="inputEmail1" class="col-lg-2 control-label">Paciente</label>
                         <div class="col-lg-10">
-                            <select name="pacient_id" class="form-control" required>
+                            <select name="pacient_id" class="form-control selectpicker" required data-live-search="true">
                                 <option value="">-- SELECCIONE --</option>
                                 <?php foreach($pacients as $p):?>
                                     <option value="<?php echo $p->id; ?>"><?php echo $p->id." - ".$p->name." ".$p->lastname; ?></option>
@@ -38,7 +41,7 @@ $payments = PaymentData::getAll();
                     <div class="form-group">
                         <label for="inputEmail1" class="col-lg-2 control-label">Medico</label>
                         <div class="col-lg-10">
-                            <select name="medic_id" class="form-control" required>
+                            <select name="medic_id" class="form-control selectpicker" required data-live-search="true">
                                 <option value="">-- SELECCIONE --</option>
                                 <?php foreach($medics as $p):?>
                                     <option value="<?php echo $p->id; ?>"><?php echo $p->id." - ".$p->name." ".$p->lastname; ?></option>
@@ -126,6 +129,12 @@ $payments = PaymentData::getAll();
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 <script>
+
+    $(function() {
+        $('.selectpicker').selectpicker();
+    });
+
+
     $(function () {
         $('#date_time').datetimepicker({
             inline: true,
@@ -133,4 +142,6 @@ $payments = PaymentData::getAll();
             locale: 'es-ES'
         });
     });
+
+
 </script>

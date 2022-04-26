@@ -18,7 +18,10 @@
 <link href='assets/fullcalendar/fullcalendar.min.css' rel='stylesheet' />
 <link href='assets/fullcalendar/fullcalendar.print.css' rel='stylesheet' media='print' />
 <script src='assets/fullcalendar/moment.min.js'></script>
-<script src='assets/fullcalendar/fullcalendar.min.js'></script>    
+<script src='assets/fullcalendar/fullcalendar.min.js'></script>   
+
+
+
 <?php endif; ?>
 
 </head>
