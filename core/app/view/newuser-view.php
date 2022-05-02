@@ -14,7 +14,7 @@ $locations = LocationData::getAll();
 
   <div class="form-group">
     <label for="inputEmail1" class="col-lg-2 control-label">Nombre*</label>
-    <div class="col-md-6">
+    <div class="col-md-6"> 
       <input type="text" name="name" class="form-control" id="name" placeholder="Nombre">
     </div>
   </div>
@@ -59,11 +59,22 @@ $locations = LocationData::getAll();
   <div class="form-group">
     <label for="inputEmail1" class="col-lg-2 control-label">Es administrador</label>
     <div class="col-md-6">
-<div class="checkbox">
-    <label>
-      <input type="checkbox" name="is_admin"> 
-    </label>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" name="is_admin"> 
+        </label>
+      </div>
+    </div>
   </div>
+
+  <div class="form-group">
+    <label for="inputEmail1" class="col-lg-2 control-label">Es Editor</label>
+    <div class="col-md-6">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" name="is_editor"> 
+        </label>
+      </div>
     </div>
   </div>
 

@@ -3,7 +3,7 @@
 	<div class="col-md-12">
 <div class="card">
   <div class="card-header" data-background-color="blue">
-      <h4 class="title">Editar Usuario</h4>
+      <h4 class="title">Editar Usuario</h4> 
   </div>
   <div class="card-content table-responsive">
 
@@ -58,13 +58,25 @@
   <div class="form-group">
     <label for="inputEmail1" class="col-lg-2 control-label" >Es administrador</label>
     <div class="col-md-6">
-<div class="checkbox">
-    <label>
-      <input type="checkbox" name="is_admin" <?php if($user->is_admin){ echo "checked";}?>> 
-    </label>
-  </div>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" name="is_admin" <?php if($user->is_admin == 1){ echo "checked";}?>> 
+        </label>
+      </div>
     </div>
   </div>
+
+  <div class="form-group">
+    <label for="inputEmail1" class="col-lg-2 control-label" >Es Editor</label>
+    <div class="col-md-6">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" name="is_editor" <?php if($user->is_editor == 1){ echo "checked";}?>> 
+        </label>
+      </div>
+    </div>
+  </div>
+
 
 
   <div class="form-group">

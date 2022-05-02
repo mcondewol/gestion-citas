@@ -24,10 +24,16 @@
 
 <?php endif; ?>
 
+
+
 </head>
 
 <body>
 <?php if(isset($_SESSION["user_id"])):?>
+
+  <?php 
+      $user = UserData::getById($_SESSION["user_id"]);
+  ?>
   <div class="wrapper">
 
       <div class="sidebar" data-color="blue">
@@ -38,7 +44,9 @@
       </div>
 
         <div class="sidebar-wrapper">
+          
               <ul class="nav">
+            <?php if($user->is_admin == 1){ ?>
                   <li class="">
                       <a href="./">
                           <i class="fa fa-home"></i>
@@ -81,7 +89,34 @@
                           <p>Usuarios</p>
                       </a>
                   </li>
+              <?php }elseif ($user->is_editor == 1){?>
+                <li class="">
+                      <a href="./">
+                          <i class="fa fa-home"></i>
+                          <p>Inicio</p>
+                      </a>
+                  </li>
+                  <li>
+                      <a href="./?view=reservations">
+                          <i class="fa fa-calendar"></i>
+                          <p>Citas</p>
+                      </a>
+                  </li>
+                  <li>
+                      <a href="./?view=pacients">
+                          <i class="fa fa-male"></i>
+                          <p>Pacientes</p>
+                      </a>
+                  </li>
+                  <li>
+                      <a href="./?view=medics">
+                          <i class="fa fa-support"></i>
+                          <p>Medicos</p>
+                      </a>
+                  </li>
+              <?php }?>
               </ul>
+          
         </div>
       </div>
 

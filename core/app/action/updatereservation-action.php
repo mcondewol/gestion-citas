@@ -15,13 +15,22 @@ include "../../autoload.php";
 include '../model/ReservationData.php'; 
 include '../model/PacientData.php';
 
+$date = $_POST["date_at"];
+$time = $_POST["time_at"];
+
 // passing true in constructor enables exceptions in PHPMailer
 $mail = new PHPMailer(true);
 $mail->CharSet = 'UTF-8';
 if(count($_POST)>0){
+
+    $timestamp = strtotime($date); 
+    $newDate = date("d-m-Y", $timestamp );
+    $newTime = date('H:i A', strtotime($time));
+
 	$user = ReservationData::getById($_POST["id"]);
 	$user->title = $_POST["title"];
 	$user->pacient_id = $_POST["pacient_id"];
+    $pacient = PacientData::getById($_POST["pacient_id"]);
 	$user->medic_id = $_POST["medic_id"];
 	$user->date_at = $_POST["date_at"];
 	$user->time_at = $_POST["time_at"]; 
@@ -33,7 +42,11 @@ if(count($_POST)>0){
 	$user->sick = $_POST["sick"];
 	$user->symtoms = $_POST["symtoms"];
 	$user->medicaments = $_POST["medicaments"];
-    $userEmail = $_POST["email"];
+    //$userEmail = $_POST["email"];
+
+    $userEmail = $pacient->email;
+    $pacientName = $pacient->name;
+    $pacientLastName = $pacient->lastname;
 
 	$user->update();
     $mail->isSMTP();
@@ -61,8 +74,8 @@ if(count($_POST)>0){
              $subject = "Actualización de cita";
              $subject = utf8_decode($subject);
              $mail->Subject = $subject;
-             $mail->Body = 'Su cita ha sido cancelada';
-         
+             $mail->Body = 'Hola '. $pacientName.' '.$pacientLastName . ', <br> Tu cita para el día '. $newDate. ' en el horario de ' .$newTime. ' se cancelo de forma exitosa. <br><br> Saludos,';
+
              if($mail->send()){
                  echo "email enviado";
              }else{
@@ -80,8 +93,8 @@ if(count($_POST)>0){
             $subject = "Actualización de cita";
             $subject = utf8_decode($subject);
             $mail->Subject = $subject;
-            $mail->Body = 'Su cita ha sido actualizada';
-        
+            $mail->Body = 'Hola '. $pacientName.' '.$pacientLastName . ', <br> Tu cita para el día '. $newDate. ' en el horario de ' .$newTime. ' se agendo de forma exitosa. <br><br> Saludos,';
+
             if($mail->send()){
                 echo "email enviado";
             }else{

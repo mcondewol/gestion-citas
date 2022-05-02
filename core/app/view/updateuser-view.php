@@ -5,6 +5,8 @@ if(count($_POST)>0){
 	if(isset($_POST["is_admin"])){$is_admin=1;}
 	$is_active=0;
 	if(isset($_POST["is_active"])){$is_active=1;}
+	$is_editor = 0;
+	if(isset($_POST["is_editor"])){$is_editor=1;}
 	$user = UserData::getById($_POST["user_id"]);
 	$user->name = $_POST["name"];
 	$user->lastname = $_POST["lastname"];
@@ -12,6 +14,8 @@ if(count($_POST)>0){
 	$user->email = $_POST["email"];
 	$user->is_admin=$is_admin;
 	$user->is_active=$is_active;
+	$user->is_editor=$is_editor;
+	
 	$user->update();
 
 	if($_POST["password"]!=""){
