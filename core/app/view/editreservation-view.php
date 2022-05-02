@@ -4,7 +4,13 @@ $pacients = PacientData::getById($reservation->pacient_id);
 $medics = MedicData::getAll();
 $statuses = StatusData::getAll();
 $payments = PaymentData::getAll();
-?>
+?> 
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css">
+<link href="assets/css/material-dashboard.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css" rel="stylesheet" />
+
 <div class="row">
 	<div class="col-md-12">
 
@@ -40,15 +46,15 @@ $payments = PaymentData::getAll();
   <div class="form-group">
     <label for="inputEmail1" class="col-lg-2 control-label">Medico</label>
     <div class="col-lg-4">
-<select name="medic_id" class="form-control" required>
-<option value="">-- SELECCIONE --</option>
-  <?php foreach($medics as $p):?>
-    <option value="<?php echo $p->id; ?>" <?php if($p->id==$reservation->medic_id){ echo "selected"; }?>><?php echo $p->id." - ".$p->name." ".$p->lastname; ?></option>
-  <?php endforeach; ?>
-</select>
+      <select name="medic_id" class="form-control selectpicker" required data-live-search="true>
+      <option value="">-- SELECCIONE --</option>
+        <?php foreach($medics as $p):?>
+          <option value="<?php echo $p->id; ?>" <?php if($p->id==$reservation->medic_id){ echo "selected"; }?>><?php echo $p->id." - ".$p->name." ".$p->lastname; ?></option>
+        <?php endforeach; ?>
+      </select>
     </div>
 
-  </div>
+  </div> 
 
   <div class="form-group">
     <label for="inputEmail1" class="col-lg-2 control-label">Fecha/Hora</label>
@@ -103,3 +109,25 @@ $payments = PaymentData::getAll();
 </div>
 	</div>
 </div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+<script>
+
+    $(function() {
+        $('.selectpicker').selectpicker();
+    });
+
+
+    $(function () {
+        $('#date_time').datetimepicker({
+            inline: true,
+            sideBySide: true,
+            locale: 'es-ES'
+        });
+    });
+
+
+</script> 

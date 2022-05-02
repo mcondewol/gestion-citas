@@ -17,6 +17,7 @@ if(array_key_exists("opcion", $_POST)){
             $query = "SELECT
                 r.id AS 'id',
                 CONCAT (p.name, ' ', p.lastname) AS 'pacient',
+                p.dpi,
                 CONCAT (m.name, ' ', m.lastname) AS 'medic',
                 c.name AS 'category',
                 r.`date_at` AS 'date',
@@ -49,6 +50,7 @@ if(array_key_exists("opcion", $_POST)){
                         "medic" => $row["medic"],
                         "fecha" => $newDate,
                         "hora" => $newTime,
+                        "dpi" => $row["dpi"],
                         "acciones" => $acciones 
                     );
                 }     
@@ -88,6 +90,57 @@ if(array_key_exists("opcion", $_POST)){
                         "medic" => $row["medic"],
                         "fecha" => $newDate,
                         "hora" => $newTime,
+                        "acciones" => $acciones 
+                    );
+                }     
+            } 
+        }elseif ($opcion == 3) {
+            $pacient_id = $_POST["pacient_id"];
+            $query = "SELECT
+                        r.id AS 'id',
+                        CONCAT (p.name, ' ', p.lastname) AS 'pacient',
+                        p.dpi,
+                        p.`email`,
+                        CONCAT (m.name, ' ', m.lastname) AS 'medic',
+                        c.name AS 'category',
+                        r.`date_at` AS 'date',
+                        r.`time_at` AS 'time',
+                        r.`note`,
+                        c.`name` AS 'category_status',
+                        f.`name` AS 'payment_status'
+                    FROM
+                        reservation r
+                        INNER JOIN pacient p
+                        ON p.`id` = r.`pacient_id`
+                        INNER JOIN medic m
+                        ON m.`id` = r.`medic_id`
+                        INNER JOIN category c
+                        ON c.`id` = m.`category_id`
+                        INNER JOIN payment f
+                        ON f.`id` = r.`payment_id`
+                    WHERE p.`id` = $pacient_id;
+                    ";
+            $stmt = $dbhost->prepare($query);
+            if($stmt->execute()){
+                while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                    $acciones = "<a href='index.php?view=reservationhistory&id=".$row['id']."' title='Ver' class='btn btn-success btn-xs'><i class='glyphicon glyphicon-list-alt'></i></a>
+                                <a href='index.php?view=editreservation&id=".$row['id']."' title='Editar' class='btn btn-warning btn-xs'><i class='fa fa-pencil'></i></a>
+                                <a href='index.php?view=delreservation&id=".$row['id']."' class='btn btn-danger btn-xs' rel='tooltip' title='Eliminar' class='btn-simple btn btn-danger btn-xs'><i class='fa fa-remove'></i></a>";
+                    
+                    $oldDate = $row["date"];
+                    $timestamp = strtotime($oldDate); 
+                    $newDate = date("d-m-Y", $timestamp );
+
+                    $oldTime = $row["time"];
+                    $newTime = date('H:i A', strtotime($oldTime));
+                                
+                    $data[] = array(
+                        "area" => $row["category"],
+                        "pacient" => $row["pacient"],
+                        "medic" => $row["medic"],
+                        "fecha" => $newDate,
+                        "hora" => $newTime,
+                        "dpi" => $row["dpi"],
                         "acciones" => $acciones 
                     );
                 }     

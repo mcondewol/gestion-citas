@@ -23,7 +23,7 @@ $payments = PaymentData::getAll();
     </div>
     <label for="inputEmail1" class="col-lg-2 control-label">DPI</label>
     <div class="col-md-4">
-      <input readonly="readonly" type="text" name="DPI" value="<?php echo $pacients->DPI;?>" class="form-control" id="email" placeholder="DPI" disabled>
+      <input readonly="readonly" type="text" name="DPI" value="<?php echo $pacients->dpi;?>" class="form-control" id="email" placeholder="DPI" disabled>
     </div>
 </div>
 <div class="form-group">

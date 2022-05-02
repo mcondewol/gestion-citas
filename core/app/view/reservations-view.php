@@ -21,6 +21,7 @@
                     <thead>
                         <tr>
                             <th>Paciente</th>
+                            <th>DPI</th>
                             <th>Médico</th>
                             <th>Área</th>
                             <th>Fecha</th>
@@ -33,6 +34,7 @@
                     <tfoot>
                         <tr>
                             <th>Paciente</th>
+                            <th>DPI</th>
                             <th>Médico</th>
                             <th>Área</th>
                             <th>Fecha</th>
@@ -84,6 +86,7 @@
             },
             columns: [
                 { "data": "pacient" },
+                { "data": "dpi" },
                 { "data": "medic" },
                 { "data": "area" },
                 { "data": "fecha" },

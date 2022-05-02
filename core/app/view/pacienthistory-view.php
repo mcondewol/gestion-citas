@@ -1,64 +1,101 @@
-<?php
-$pacient = PacientData::getById($_GET["id"]);
+<?php 
+  //error_reporting(E_ALL);
+  ini_set('display_errors', TRUE);
+  ini_set('display_startup_errors', TRUE);
+  $pacient = PacientData::getById($_GET["id"]);
 ?>
+  <!-- DATATABLE PLUGIN -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.jqueryui.css"/>
+ 
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/dataTables.jqueryui.js"></script>
+ 
 <div class="row">
 	<div class="col-md-12">
-<div class="btn-group pull-right">
-<!--<div class="btn-group pull-right">
-  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-    <i class="fa fa-download"></i> Descargar <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" role="menu">
-    <li><a href="report/clients-word.php">Word 2007 (.docx)</a></li>
-  </ul>
-</div>
--->
-</div>
-<div class="card">
-  <div class="card-header" data-background-color="blue">
-      <h4 class="title">Historial de Citas del Paciente</h4>
-<p>Paciente: <?php echo $pacient->name." ".$pacient->lastname;?></p>
-  </div>
-  <div class="card-content table-responsive">
-		<?php
-		$users = ReservationData::getAllByPacientId($_GET["id"]);
-		if(count($users)>0){
-			// si hay usuarios
-			?>
-			<table class="table table-bordered table-hover">
-			<thead>
-			<th>Asunto</th>
-			<th>Paciente</th>
-			<th>Medico</th>
-			<th>Fecha</th>
-			</thead>
-			<?php
-			foreach($users as $user){
-				$pacient  = $user->getPacient();
-				$medic = $user->getMedic();
-				?>
-				<tr>
-				<td><?php echo $user->title; ?></td>
-				<td><?php echo $pacient->name." ".$pacient->lastname; ?></td>
-				<td><?php echo $medic->name." ".$pacient->lastname; ?></td>
-				<td><?php echo $user->date_at." ".$user->time_at; ?></td>
-				</tr>
-				<?php
-
-			}
-?>
-</table>
-</div>
-</div>
-<?php
-
-		}else{
-			echo "<p class='alert alert-danger'>No hay citas</p>";
-		}
-
-
-		?>
-
-
+		<div class="card">
+        <div class="card-header" data-background-color="blue">
+      	    <h4 class="title">Historial de Citas del Paciente</h4>
+		    <p>Paciente: <?php echo $pacient->name." ".$pacient->lastname;?></p>
+        </div>
+  			<div class="card-content table-responsive">
+                <table id="dt_doctores" class="display" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Paciente</th>
+                            <th>DPI</th>
+                            <th>Médico</th>
+                            <th>Área</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Paciente</th>
+                            <th>DPI</th>
+                            <th>Médico</th>
+                            <th>Área</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+		</div>
 	</div>
 </div>
+<script>
+    $(document).ready(function() {
+        tablaDoctores = $('#dt_doctores').DataTable({
+            dom: "<'row customDttables' <'col-sm-6 col-lg-6 dt-left' l><'col-sm-6 col-lg-6 dt-right' f>> <'row customDttables' <'col-sm-12 col-md-12 col-lg-12'>><t><ip>",
+            language: {
+                lengthMenu: "Mostrar _MENU_ registros",
+                zeroRecords: "No se encontraron registros.",
+                processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>Cargando datos...',
+                info: "Mostrando pagina _PAGE_ de _PAGES_",
+                infoEmpty: "No hay registros disponibles",
+                infoFiltered: "(filtrando de _MAX_ registros)",
+                search: "Buscar:",
+                paginate: {
+                    previous: "Anterior",
+                    next: "Siguiente"
+                },
+                select: {
+                    rows: {
+                        _: "%d Registros seleccionados",
+                        0: "Ninguno seleccionado.",
+                        1: "1 Registro seleccionado"
+                    }
+                },
+            },
+            pageLength: 10,
+            lengthMenu: [10, 15, 25, 50, 75, 100],
+            fixedColumns: true,
+            scrollX: true,
+            scrollX: true,
+            processing: true,      
+            ajax: {
+                url: "ajax/reservations_ajax.php",
+                type: "POST",
+                data: function (data) {
+                    data.opcion = 3;
+                    data.pacient_id = <?php echo $pacient->id?>
+                }
+            },
+            columns: [
+                { "data": "pacient" },
+                { "data": "dpi" },
+                { "data": "medic" },
+                { "data": "area" },
+                { "data": "fecha" },
+                { "data": "hora" },
+                { "data": "acciones" }
+            ],
+            order: [1, 'asc'],
+        });
+    });
+</script>

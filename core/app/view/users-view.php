@@ -16,7 +16,7 @@
       			<h4 class="title">Usuarios</h4>
   			</div>
   			<div class="card-content table-responsive">
-				<a href="./index.php?view=newreservation" class="btn btn-default"><i class='fa fa-support'></i> Nuevo Usuario</a>
+				<a href="index.php?view=newuser" class="btn btn-default"><i class='fa fa-support'></i> Nuevo Usuario</a>
                 <table id="dt_doctores" class="display" style="width:100%">
                     <thead>
                         <tr>

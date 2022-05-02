@@ -18,8 +18,8 @@ $payments = PaymentData::getAll();
         <div class="card">
             <div class="card-header" data-background-color="blue">
                 <h4>Nueva Cita</h4>
-            </div>
-            <div class="card-content table-responsive">
+            </div> 
+            <div class="card-content table-responsive" style="width: 90%;">
                 <form class="form-horizontal" role="form" method="post" action="./?action=addreservation">
                     <div class="form-group">
                         <label for="inputEmail1" class="col-lg-2 control-label">Asunto</label>
@@ -41,7 +41,7 @@ $payments = PaymentData::getAll();
                     <div class="form-group">
                         <label for="inputEmail1" class="col-lg-2 control-label">Medico</label>
                         <div class="col-lg-10">
-                            <select name="medic_id" class="form-control selectpicker" required data-live-search="true">
+                            <select name="medic_id" class="form-control selectpicker" required data-live-search="true" id="medic_id">
                                 <option value="">-- SELECCIONE --</option>
                                 <?php foreach($medics as $p):?>
                                     <option value="<?php echo $p->id; ?>"><?php echo $p->id." - ".$p->name." ".$p->lastname; ?></option>
@@ -50,16 +50,49 @@ $payments = PaymentData::getAll();
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="date" class="col-lg-2 control-label">Fecha</label>
-                        <div class="col-lg-10">
-                            <div class='input-group date' id='date_time'>
-                                <input type='text' class="form-control" name="date_time"/>
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
-                            </div>
-                        </div>
+                    <label for="inputEmail1" class="col-lg-2 control-label"></label>
+                    <div class="col-lg-6">
+                        <table class="table table-bordered border-primary hidden" id="table_schedule_week">
+                            <caption>Horario entre semana</caption>
+                            <thead>
+                            <tr>
+                                <th scope="col">Dias</th>
+                                <th scope="col">Horario</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>--</td>
+                                <td>--</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered border-primary hidden" id="table_schedule_weekend">
+                            <caption>Horario fin de semana</caption>
+                            <thead>
+                            <tr>
+                                <th scope="col">Dias</th>
+                                <th scope="col">Horario</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>--</td>
+                                <td>--</td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail1" class="col-lg-2 control-label">Fecha/Hora</label>
+                    <div class="col-lg-5">
+                        <input type="date" name="date_at" value="<?php echo $reservation->date_at; ?>" required class="form-control" id="inputEmail1" placeholder="Fecha">
+                    </div>
+                    <div class="col-lg-5">
+                        <input type="time" name="time_at" value="<?php echo $reservation->time_at; ?>" required class="form-control" id="inputEmail1" placeholder="Hora">
+                    </div>
+                </div>
 
                     <div class="form-group">
                         <label for="inputEmail1" class="col-lg-2 control-label">Nota</label>
@@ -130,17 +163,39 @@ $payments = PaymentData::getAll();
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 <script>
 
+$('#medic_id').on('change', function(){
+      const medic_id = this.value;
+      const tdWeek = document.querySelectorAll('#table_schedule_week tbody tr td');
+      const tableWeek = document.querySelector('#table_schedule_week');
+
+      const tableWeekend = document.querySelector('#table_schedule_weekend');
+      const tdWeekend = document.querySelectorAll('#table_schedule_weekend tbody tr td');
+
+      $.ajax({
+          type: "POST",
+          url: "core/app/model/ajaxScheduleMedic.php",
+          data:{medic_id},
+          success: function(result){
+              const {esemana, week_start, week_end, fsemana, weekend_start, weekend_end} = JSON.parse(result)
+
+              tdWeek[0].textContent = esemana;
+              tdWeek[1].textContent = `${week_start} a ${week_end}`;
+              tableWeek.classList.remove('hidden');
+
+              if(fsemana != ''){
+                  tdWeekend[0].textContent = fsemana;
+                  tdWeekend[1].textContent = `${weekend_start} a ${weekend_end}`;
+                  tableWeekend.classList.remove('hidden');
+              }else{
+                  tableWeekend.classList.add('hidden');
+              }
+          }
+      });
+
+  });
+
     $(function() {
         $('.selectpicker').selectpicker();
-    });
-
-
-    $(function () {
-        $('#date_time').datetimepicker({
-            inline: true,
-            sideBySide: true,
-            locale: 'es-ES'
-        });
     });
 
 
