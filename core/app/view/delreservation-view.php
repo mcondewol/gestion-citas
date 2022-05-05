@@ -20,6 +20,8 @@ $mail = new PHPMailer(true);
 
 
 	$user = ReservationData::getById($_GET["id"]);
+    $pacient = PacientData::getById($user->pacient_id);
+    $pacient_email = $pacient->email;
     $user->del();
     $mail->CharSet = 'UTF-8';
 	
@@ -27,19 +29,17 @@ $mail = new PHPMailer(true);
             
              // Server settings
              $mail->isSMTP();
-             $mail->Host = 'smtp.gmail.com';
-             $mail->SMTPAuth = true;
-             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-             $mail->Port = 587;
-         
-             $mail->Username = 'support@wolvisor.com'; // YOUR gmail email
-             //$mail->Password = 'zhikcngxixagwwri'; // YOUR gmail password
-             $mail->Password = 'lmceoebvcleisjdx'; // YOUR gmail password
-         
-             // Sender and recipient settings
-             $mail->setFrom('support@wolvisor.com', 'Aprofam');
-             $mail->addAddress('mrcou.994@gmail.com', '');
-             //setting headers
+             $mail->Host = 'mail.aprofam.net';
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587;
+
+            $mail->Username = 'servicioalcliente@aprofam.net'; // YOUR gmail email
+            $mail->Password = 'Aprofam2022*'; // YOUR gmail password
+
+            // Sender and recipient settings
+            $mail->setFrom('servicioalcliente@aprofam.net', 'Aprofam');
+             $mail->addAddress($pacient_email, '');
              // Setting the email content
              $mail->IsHTML(true);
              $subject = "Cancelación de cita";
@@ -47,12 +47,12 @@ $mail = new PHPMailer(true);
              $mail->Subject = $subject;
 
              $mail->Subject = "Cancelación de Cita";
-             $mail->Body = 'Esto es una prueba desde gestion de citas';
+             $mail->Body = 'Su cita ha sido cancelada';
          
              if($mail->send()){
-                 echo "email enviado";
+                 $sended = true;
              }else{
-                 echo "no se envio";
+                $sended = false;
              }
             
         } catch (Exception $e) {

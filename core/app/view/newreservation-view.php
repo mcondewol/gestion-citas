@@ -33,7 +33,7 @@ $payments = PaymentData::getAll();
                             <select name="pacient_id" class="form-control selectpicker" required data-live-search="true">
                                 <option value="">-- SELECCIONE --</option>
                                 <?php foreach($pacients as $p):?>
-                                    <option value="<?php echo $p->id; ?>"><?php echo $p->id." - ".$p->name." ".$p->lastname; ?></option>
+                                    <option value="<?php echo $p->id; ?>"><?php echo $p->id." - ".$p->name." ".$p->lastname." - ".$p->dpi; ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -82,7 +82,7 @@ $payments = PaymentData::getAll();
                                 <td>--</td>
                             </tr>
                             </tbody>
-                        </table>
+                        </table> 
                     </div>
                 </div>
                 <div class="form-group">
